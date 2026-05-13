@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rider to City Assignment</title>
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #08266e;
+        padding: 20px;
+        color: #1e293b;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+    }
+
+    .controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th, td {
+        border: 1px solid #e2e8f0;
+        padding: 12px;
+        text-align: center;
+    }
+
+    th {
+        background: #e9e9e9;
+    }
+
+    .editable-label {
+        background: transparent;
+        border: 1px dashed transparent;
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    .editable-label:hover {
+        border-color: #071f3c;
+        background: #fff;
+    }
+
+    input[type="number"] {
+        width: 70px;
+        padding: 6px;
+        border: 1px solid #cbd5e1;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        border: none;
+        transition: 0.2s;
+    }
+
+    .btn-add {
+        background: #10b981;
+        color: white;
+    }
+
+    .btn-remove {
+        background: #ef4444;
+        color: white;
+    }
+
+    .btn-solve {
+        background: #2563eb;
+        color: white;
+        width: 100%;
+        margin-top: 20px;
+        font-size: 1.1rem;
+    }
+
+    #results {
+        margin-top: 25px;
+        padding: 20px;
+        border-radius: 12px;
+        background: #f0fdf4;
+        display: none;
+        border: 1px solid #bbf7d0;
+    }
+
+    .match-item {
+        padding: 8px;
+        border-bottom: 1px solid #dcfce7;
+        color: #166534;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Minimizing Total Delivery Time</h2>
+
+    <p>
+        Enter estimated travel time (minutes).
+    </p>
+
+    <div class="controls">
+        <button class="btn btn-add" onclick="addRow()">+ Add Location</button>
+        <button class="btn btn-add" onclick="addColumn()">+ Add Rider</button>
+        <button class="btn btn-remove" onclick="removeRow()">- Remove Location</button>
+        <button class="btn btn-remove" onclick="removeColumn()">- Remove Rider</button>
+    </div>
+
+    <table id="mainTable">
+
+        <thead id="tableHead">
+            <tr>
+                <th>City | Rider</th>
+                <th><input class="editable-label" value="Rider 1"></th>
+                <th><input class="editable-label" value="Rider 2"></th>
+                <th><input class="editable-label" value="Rider 3"></th>
+            </tr>
+        </thead>
+
+        <tbody id="tableBody">
+            <tr>
+                <td><input class="editable-label" value="Manila"></td>
+                <td><input type="number" value="15"></td>
+                <td><input type="number" value="45"></td>
+                <td><input type="number" value="20"></td>
+            </tr>
+
+            <tr>
+                <td><input class="editable-label" value="Makati"></td>
+                <td><input type="number" value="30"></td>
+                <td><input type="number" value="10"></td>
+                <td><input type="number" value="25"></td>
+            </tr>
+
+            <tr>
+                <td><input class="editable-label" value="Quezon City"></td>
+                <td><input type="number" value="10"></td>
+                <td><input type="number" value="35"></td>
+                <td><input type="number" value="5"></td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <button class="btn btn-solve" onclick="calculateAssignments()">
+        Solve Using Hungarian Method
+    </button>
+
+    <div id="results">
+        <h3>Optimal Assignment</h3>
+
+        <div id="assignList"></div>
+
+        <div id="totalCost"
+             style="margin-top:15px; font-weight:bold; font-size:1.2rem;">
+        </div>
+    </div>
+
+</div>
+
+<!-- Hungarian Algorithm Library -->
+<script src="https://cdn.jsdelivr.net/npm/munkres-js@1.2.2/munkres.min.js"></script>
+
+<script>
+
+function addRow() {
+
+    const tbody = document.getElementById('tableBody');
+    const colCount = document.getElementById('tableHead').rows[0].cells.length;
+
+    const tr = document.createElement('tr');
+
+    tr.innerHTML =
+        `<td><input class="editable-label" value="New Location"></td>`;
+
+    for(let i = 1; i < colCount; i++) {
+
+        tr.innerHTML += `
+            <td>
+                <input type="number" value="0">
+            </td>
+        `;
+    }
+
+    tbody.appendChild(tr);
+}
+
+function addColumn() {
+
+    const theadRow = document.getElementById('tableHead').rows[0];
+    const tbodyRows = document.getElementById('tableBody').rows;
+
+    const th = document.createElement('th');
+
+    th.innerHTML =
+        `<input class="editable-label" value="Rider ${theadRow.cells.length}">`;
+
+    theadRow.appendChild(th);
+
+    for(let i = 0; i < tbodyRows.length; i++) {
+
+        const td = document.createElement('td');
+
+        td.innerHTML = `<input type="number" value="0">`;
+
+        tbodyRows[i].appendChild(td);
+    }
+}
+
+function removeRow() {
+
+    const tbody = document.getElementById('tableBody');
+
+    if(tbody.rows.length > 1) {
+        tbody.deleteRow(-1);
+    }
+}
+
+function removeColumn() {
+
+    const theadRow = document.getElementById('tableHead').rows[0];
+    const tbodyRows = document.getElementById('tableBody').rows;
+
+    if(theadRow.cells.length > 2) {
+
+        theadRow.deleteCell(-1);
+
+        for(let i = 0; i < tbodyRows.length; i++) {
+            tbodyRows[i].deleteCell(-1);
+        }
+    }
+}
+
+/* =========================
+   HUNGARIAN METHOD SECTION
+========================= */
+
+function calculateAssignments() {
+
+    const rows = Array.from(
+        document.querySelectorAll('#tableBody tr')
+    );
+
+    const riderNames = Array.from(
+        document.querySelectorAll('#tableHead .editable-label')
+    ).map(el => el.value);
+
+    const cityNames = rows.map(row =>
+        row.querySelector('.editable-label').value
+    );
+
+    const matrix = rows.map(row => {
+
+        return Array.from(
+            row.querySelectorAll('input[type="number"]')
+        ).map(input => parseFloat(input.value) || 0);
+
+    });
+
+    const munkres = new Munkres();
+
+    // Hungarian Algorithm happens here
+    const indices = munkres.compute(matrix);
+
+    let assignments = [];
+    let total = 0;
+
+    indices.forEach(([row, col]) => {
+
+        assignments.push({
+            city: cityNames[row],
+            rider: riderNames[col],
+            cost: matrix[row][col]
+        });
+
+        total += matrix[row][col];
+    });
+
+    display(assignments, total);
+}
+
+function display(list, sum) {
+
+    const res = document.getElementById('results');
+    const listDiv = document.getElementById('assignList');
+
+    listDiv.innerHTML = list.map(a => `
+        <div class="match-item">
+            🕒 <b>${a.rider}</b>
+            assigned to
+            <b>${a.city}</b>
+            (${a.cost} mins)
+        </div>
+    `).join('');
+
+    document.getElementById('totalCost').innerText =
+        `Minimum Total Travel Time: ${sum} minutes`;
+
+    res.style.display = 'block';
+}
+
+</script>
+
+</body>
+</html>
