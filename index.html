@@ -1,115 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 <title>Rider to City Assignment</title>
 
 <style>
-    body {
-        font-family: 'Segoe UI', sans-serif;
-        background: #08266e;
-        padding: 20px;
-        color: #1e293b;
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:#08266e;
+    padding:20px;
+    color:#1e293b;
+    margin:0;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 4px 30px rgba(0,0,0,0.1);
+}
+
+h2{
+    margin-top:0;
+    color:#0f172a;
+}
+
+.controls{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+/* =========================
+   TABLE RESPONSIVE WRAPPER
+========================= */
+
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+table{
+    width:100%;
+    min-width:600px;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+th,td{
+    border:1px solid #e2e8f0;
+    padding:12px;
+    text-align:center;
+}
+
+th{
+    background:#e9e9e9;
+}
+
+.editable-label{
+    background:transparent;
+    border:1px dashed transparent;
+    font-weight:bold;
+    text-align:center;
+    width:100%;
+    cursor:pointer;
+    padding:5px;
+}
+
+.editable-label:hover{
+    border-color:#071f3c;
+    background:#fff;
+}
+
+input[type="number"]{
+    width:70px;
+    padding:6px;
+    border:1px solid #cbd5e1;
+    border-radius:4px;
+    text-align:center;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn{
+    padding:10px 16px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:600;
+    border:none;
+    transition:0.2s;
+}
+
+.btn:hover{
+    opacity:0.9;
+}
+
+.btn-add{
+    background:#10b981;
+    color:white;
+}
+
+.btn-remove{
+    background:#ef4444;
+    color:white;
+}
+
+.btn-solve{
+    background:#2563eb;
+    color:white;
+    width:100%;
+    margin-top:20px;
+    font-size:1.1rem;
+}
+
+/* =========================
+   RESULTS
+========================= */
+
+#results{
+    margin-top:25px;
+    padding:20px;
+    border-radius:12px;
+    background:#f0fdf4;
+    display:none;
+    border:1px solid #bbf7d0;
+}
+
+.match-item{
+    padding:8px;
+    border-bottom:1px solid #dcfce7;
+    color:#166534;
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+
+@media (max-width:768px){
+
+    body{
+        padding:10px;
     }
 
-    .container {
-        max-width: 1000px;
-        margin: auto;
-        background: white;
-        padding: 30px;
-        border-radius: 16px;
-        box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+    .container{
+        padding:15px;
+        border-radius:12px;
     }
 
-    .controls {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
+    h2{
+        font-size:1.4rem;
+        text-align:center;
     }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
+    p{
+        font-size:0.95rem;
+        text-align:center;
     }
 
-    th, td {
-        border: 1px solid #e2e8f0;
-        padding: 12px;
-        text-align: center;
+    .controls{
+        flex-direction:column;
     }
 
-    th {
-        background: #e9e9e9;
+    .btn{
+        width:100%;
+        font-size:1rem;
+        padding:12px;
     }
 
-    .editable-label {
-        background: transparent;
-        border: 1px dashed transparent;
-        font-weight: bold;
-        text-align: center;
-        width: 100%;
-        cursor: pointer;
+    table{
+        min-width:500px;
     }
 
-    .editable-label:hover {
-        border-color: #071f3c;
-        background: #fff;
+    th,td{
+        padding:8px;
+        font-size:0.9rem;
     }
 
-    input[type="number"] {
-        width: 70px;
-        padding: 6px;
-        border: 1px solid #cbd5e1;
-        border-radius: 4px;
-        text-align: center;
+    input[type="number"]{
+        width:60px;
+        font-size:0.9rem;
     }
 
-    .btn {
-        padding: 8px 16px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: 600;
-        border: none;
-        transition: 0.2s;
+    .editable-label{
+        font-size:0.9rem;
     }
 
-    .btn-add {
-        background: #10b981;
-        color: white;
+    #results{
+        padding:15px;
     }
 
-    .btn-remove {
-        background: #ef4444;
-        color: white;
+    .match-item{
+        font-size:0.95rem;
+        line-height:1.5;
     }
 
-    .btn-solve {
-        background: #2563eb;
-        color: white;
-        width: 100%;
-        margin-top: 20px;
-        font-size: 1.1rem;
+    #totalCost{
+        text-align:center;
     }
+}
 
-    #results {
-        margin-top: 25px;
-        padding: 20px;
-        border-radius: 12px;
-        background: #f0fdf4;
-        display: none;
-        border: 1px solid #bbf7d0;
-    }
-
-    .match-item {
-        padding: 8px;
-        border-bottom: 1px solid #dcfce7;
-        color: #166534;
-    }
 </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -121,60 +230,122 @@
     </p>
 
     <div class="controls">
-        <button class="btn btn-add" onclick="addRow()">+ Add Location</button>
-        <button class="btn btn-add" onclick="addColumn()">+ Add Rider</button>
-        <button class="btn btn-remove" onclick="removeRow()">- Remove Location</button>
-        <button class="btn btn-remove" onclick="removeColumn()">- Remove Rider</button>
+        <button class="btn btn-add" onclick="addRow()">
+            + Add Location
+        </button>
+
+        <button class="btn btn-add" onclick="addColumn()">
+            + Add Rider
+        </button>
+
+        <button class="btn btn-remove" onclick="removeRow()">
+            - Remove Location
+        </button>
+
+        <button class="btn btn-remove" onclick="removeColumn()">
+            - Remove Rider
+        </button>
     </div>
 
-    <table id="mainTable">
+    <!-- RESPONSIVE TABLE WRAPPER -->
+    <div class="table-wrapper">
 
-        <thead id="tableHead">
-            <tr>
-                <th>City | Rider</th>
-                <th><input class="editable-label" value="Rider 1"></th>
-                <th><input class="editable-label" value="Rider 2"></th>
-                <th><input class="editable-label" value="Rider 3"></th>
-            </tr>
-        </thead>
+        <table id="mainTable">
 
-        <tbody id="tableBody">
-            <tr>
-                <td><input class="editable-label" value="Manila"></td>
-                <td><input type="number" value="15"></td>
-                <td><input type="number" value="45"></td>
-                <td><input type="number" value="20"></td>
-            </tr>
+            <thead id="tableHead">
+                <tr>
+                    <th>City | Rider</th>
 
-            <tr>
-                <td><input class="editable-label" value="Makati"></td>
-                <td><input type="number" value="30"></td>
-                <td><input type="number" value="10"></td>
-                <td><input type="number" value="25"></td>
-            </tr>
+                    <th>
+                        <input class="editable-label" value="Rider 1">
+                    </th>
 
-            <tr>
-                <td><input class="editable-label" value="Quezon City"></td>
-                <td><input type="number" value="10"></td>
-                <td><input type="number" value="35"></td>
-                <td><input type="number" value="5"></td>
-            </tr>
-        </tbody>
+                    <th>
+                        <input class="editable-label" value="Rider 2">
+                    </th>
 
-    </table>
+                    <th>
+                        <input class="editable-label" value="Rider 3">
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody id="tableBody">
+
+                <tr>
+                    <td>
+                        <input class="editable-label" value="Manila">
+                    </td>
+
+                    <td>
+                        <input type="number" value="15">
+                    </td>
+
+                    <td>
+                        <input type="number" value="45">
+                    </td>
+
+                    <td>
+                        <input type="number" value="20">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input class="editable-label" value="Makati">
+                    </td>
+
+                    <td>
+                        <input type="number" value="30">
+                    </td>
+
+                    <td>
+                        <input type="number" value="10">
+                    </td>
+
+                    <td>
+                        <input type="number" value="25">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input class="editable-label" value="Quezon City">
+                    </td>
+
+                    <td>
+                        <input type="number" value="10">
+                    </td>
+
+                    <td>
+                        <input type="number" value="35">
+                    </td>
+
+                    <td>
+                        <input type="number" value="5">
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
     <button class="btn btn-solve" onclick="calculateAssignments()">
         Solve Using Hungarian Method
     </button>
 
     <div id="results">
+
         <h3>Optimal Assignment</h3>
 
         <div id="assignList"></div>
 
         <div id="totalCost"
-             style="margin-top:15px; font-weight:bold; font-size:1.2rem;">
+             style="margin-top:15px;font-weight:bold;font-size:1.2rem;">
         </div>
+
     </div>
 
 </div>
@@ -184,17 +355,27 @@
 
 <script>
 
-function addRow() {
+/* =========================
+   ADD ROW
+========================= */
+
+function addRow(){
 
     const tbody = document.getElementById('tableBody');
-    const colCount = document.getElementById('tableHead').rows[0].cells.length;
+
+    const colCount =
+        document.getElementById('tableHead')
+        .rows[0]
+        .cells.length;
 
     const tr = document.createElement('tr');
 
     tr.innerHTML =
-        `<td><input class="editable-label" value="New Location"></td>`;
+        `<td>
+            <input class="editable-label" value="New Location">
+        </td>`;
 
-    for(let i = 1; i < colCount; i++) {
+    for(let i = 1; i < colCount; i++){
 
         tr.innerHTML += `
             <td>
@@ -206,57 +387,80 @@ function addRow() {
     tbody.appendChild(tr);
 }
 
-function addColumn() {
+/* =========================
+   ADD COLUMN
+========================= */
 
-    const theadRow = document.getElementById('tableHead').rows[0];
-    const tbodyRows = document.getElementById('tableBody').rows;
+function addColumn(){
+
+    const theadRow =
+        document.getElementById('tableHead').rows[0];
+
+    const tbodyRows =
+        document.getElementById('tableBody').rows;
 
     const th = document.createElement('th');
 
     th.innerHTML =
-        `<input class="editable-label" value="Rider ${theadRow.cells.length}">`;
+        `<input class="editable-label"
+         value="Rider ${theadRow.cells.length}">`;
 
     theadRow.appendChild(th);
 
-    for(let i = 0; i < tbodyRows.length; i++) {
+    for(let i = 0; i < tbodyRows.length; i++){
 
         const td = document.createElement('td');
 
-        td.innerHTML = `<input type="number" value="0">`;
+        td.innerHTML =
+            `<input type="number" value="0">`;
 
         tbodyRows[i].appendChild(td);
     }
 }
 
-function removeRow() {
+/* =========================
+   REMOVE ROW
+========================= */
 
-    const tbody = document.getElementById('tableBody');
+function removeRow(){
 
-    if(tbody.rows.length > 1) {
+    const tbody =
+        document.getElementById('tableBody');
+
+    if(tbody.rows.length > 1){
+
         tbody.deleteRow(-1);
     }
 }
 
-function removeColumn() {
+/* =========================
+   REMOVE COLUMN
+========================= */
 
-    const theadRow = document.getElementById('tableHead').rows[0];
-    const tbodyRows = document.getElementById('tableBody').rows;
+function removeColumn(){
 
-    if(theadRow.cells.length > 2) {
+    const theadRow =
+        document.getElementById('tableHead').rows[0];
+
+    const tbodyRows =
+        document.getElementById('tableBody').rows;
+
+    if(theadRow.cells.length > 2){
 
         theadRow.deleteCell(-1);
 
-        for(let i = 0; i < tbodyRows.length; i++) {
+        for(let i = 0; i < tbodyRows.length; i++){
+
             tbodyRows[i].deleteCell(-1);
         }
     }
 }
 
 /* =========================
-   HUNGARIAN METHOD SECTION
+   HUNGARIAN METHOD
 ========================= */
 
-function calculateAssignments() {
+function calculateAssignments(){
 
     const rows = Array.from(
         document.querySelectorAll('#tableBody tr')
@@ -280,7 +484,6 @@ function calculateAssignments() {
 
     const munkres = new Munkres();
 
-    // Hungarian Algorithm happens here
     const indices = munkres.compute(matrix);
 
     let assignments = [];
@@ -300,18 +503,29 @@ function calculateAssignments() {
     display(assignments, total);
 }
 
-function display(list, sum) {
+/* =========================
+   DISPLAY RESULTS
+========================= */
 
-    const res = document.getElementById('results');
-    const listDiv = document.getElementById('assignList');
+function display(list, sum){
+
+    const res =
+        document.getElementById('results');
+
+    const listDiv =
+        document.getElementById('assignList');
 
     listDiv.innerHTML = list.map(a => `
+
         <div class="match-item">
+
             🕒 <b>${a.rider}</b>
             assigned to
             <b>${a.city}</b>
             (${a.cost} mins)
+
         </div>
+
     `).join('');
 
     document.getElementById('totalCost').innerText =
